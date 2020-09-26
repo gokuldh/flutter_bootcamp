@@ -9,14 +9,25 @@ class FlutterBootcamp extends StatelessWidget{
 
     return MaterialApp(
       title: Strings.apptitle,
-      home: Scaffold(appBar: AppBar(title: Text(Strings.bartitle),),
-      body: Center(
-        child: Text(
-          "Welcome to App",style: TextStyle(
-            color: Colors.deepOrange,
-            fontSize: 30.0),
+      home: Scaffold(
+        appBar: AppBar(
+          title: Text(Strings.bartitle),
+          backgroundColor: Colors.deepOrange,
         ),
-       ),
+      body: Container(
+        color: Colors.grey[200] ,
+        child: Text("Skillto"),
+        padding: EdgeInsets.fromLTRB(30, 10, 30, 10),
+        margin: EdgeInsets.fromLTRB(50, 100, 1, 1),
+        ),
+
+        floatingActionButton: FloatingActionButton(
+          child: Text("Click"),
+          backgroundColor: Colors.deepOrange,
+          onPressed: () {
+            print("Thank you for clicking Me!");
+          },
+        ),
       ),
     );
   }
