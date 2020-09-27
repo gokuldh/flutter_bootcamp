@@ -1,155 +1,56 @@
 import 'package:flutter/material.dart';
 import 'strings.dart';
 
-void main () =>runApp(FlutterBootcamp());
+void main () =>runApp(MaterialApp(
+  home: FlutterBootcamp()
+));
 
-class FlutterBootcamp extends StatelessWidget{
+class FlutterBootcamp extends StatefulWidget{
+  @override
+  _FlutterBootcamp createState() => _FlutterBootcamp();
+}
 
-  Widget build(BuildContext context){
+class _FlutterBootcamp extends State<FlutterBootcamp>{
 
-    return MaterialApp(
-      title: Strings.apptitle,
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text(Strings.bartitle),
-          backgroundColor: Colors.deepOrange,
-        ),
-      body: Column(
-        children: [
-          Row(
-              children: <Widget>[
-                Expanded(
-                  flex: 1,
-                  child: Container(
-                    padding: EdgeInsets.all(20),
-                    color: Colors.deepOrange,
-                    child: Text("A"),
-                  ),
-                ),
-                Expanded(
-                  flex: 2,
-                  child: Container(
-                    padding: EdgeInsets.all(20),
-                    color: Colors.blue,
-                    child: Text("B"),
-                  ),
-                ),
-                Expanded(
-                  flex: 1,
-                  child: Container(
-                    padding: EdgeInsets.all(20),
-                    color: Colors.green,
-                    child: Text("C"),
-                  ),
-                ),
-              ],
-            ),
+  List<String> notes = [
+    "Take out the Car",
+    "Get Grocery from the Store",
+    "Finish your Project!! Get Grocery from the Store Take out the Car"
+  ];
 
-          Divider(
-            color: Colors.grey,
-            height: 20,
-          ),
-
-            Row(
-            children: <Widget>[
-              Expanded(
-                flex: 1,
-                child: Container(
-                  padding: EdgeInsets.all(20),
-                  color: Colors.deepOrange,
-                  child: Text("A"),
-                ),
-              ),
-              Expanded(
-                flex: 2,
-                child: Container(
-                  padding: EdgeInsets.all(20),
-                  color: Colors.blue,
-                  child: Text("B"),
-                ),
-              ),
-              Expanded(
-                flex: 1,
-                child: Container(
-                  padding: EdgeInsets.all(20),
-                  color: Colors.green,
-                  child: Text("C"),
-                ),
-              ),
-            ],
-          ),
-          SizedBox(
-            height: 40,
-          ),
-          Row(
-            children: <Widget>[
-              Expanded(
-                flex: 1,
-                  child: Container(
-                  padding: EdgeInsets.all(20),
-
-
-              )),
-
-              Expanded(
-                flex: 1,
-                  child: Container(
-                padding: EdgeInsets.all(20),
-
-              )),
-              Expanded(
-                flex: 1,
-                child: Center(
-                  child: CircleAvatar(
-                    backgroundImage: AssetImage('assets/star.jpg'),
-                    radius: 20,
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ],
-
-      ),
-
-
-        /*
-      Column(
-          mainAxisAlignment: MainAxisAlignment.end,
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: <Widget>[
-          Container(
-            color: Colors.grey[200] ,
-            child: Text("Skillto Test"),
-            padding: EdgeInsets.fromLTRB(30, 10, 30, 10),
-            ),
-            Text("Hey Skillto"),
-
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                FlatButton(
-                  onPressed: (){} ,
-                  color: Colors.deepOrange,
-                  child: Text("Click Me"),
-                ),
-                Text("Hey Skillto"),
-              ],
+  Widget cardTemplate(note) {
+    return Card(
+      margin: EdgeInsets.all(6),
+      child: Padding(
+        padding: EdgeInsets.all(15),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Text(
+              note
             ),
           ],
-        ),
-
-        */
-        floatingActionButton: FloatingActionButton(
-          child: Text("Click"),
-          backgroundColor: Colors.deepOrange,
-          onPressed: () {
-            print("Thank you for clicking Me!");
-          },
         ),
       ),
     );
   }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.grey[200],
+      appBar: AppBar(
+        title: Text("Notes App"),
+        centerTitle: true,
+        backgroundColor: Colors.deepOrange,
+      ),
+      body: Column(
+
+        children: notes.map((note) => cardTemplate(note)).toList(),
+      ),
+    );
+  }
 }
+
+
 
