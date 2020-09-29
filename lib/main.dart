@@ -1,70 +1,135 @@
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'dart:convert';
-// https://reqres.in/api/users?page=2
 
-void main () =>runApp(MaterialApp(
-  home: ApiTest(),
 
-));
+void main () =>runApp(MyApp());
 
-class ApiTest extends StatefulWidget{
+
+class MyApp extends StatefulWidget {
   @override
-  _ApiTest createState() => _ApiTest();
+  State<StatefulWidget> createState() {
+    return new _MyApp();
+  }
 
 }
 
-class _ApiTest extends State<ApiTest>{
 
-  Map data;
-  List userData;
+class _MyApp extends State<MyApp>{
 
-  Future getData() async {
-    http.Response response = await http.get("https://reqres.in/api/users?page=2");
-    data = json.decode(response.body);
-    setState(() {
-      userData = data["data"];
-    });
+  static const duration = const Duration(seconds: 1);
+
+  int secondspassed = 0;
+  bool isactive = false;
+  Timer  timer;
+
+  void ticker(){
+    if (isactive) {
+      setState(() {
+        secondspassed = secondspassed +  1;
+      });
+    }
   }
 
   @override
   void initState(){
+    timer = Timer.periodic(duration, (Timer t)
+    {
+      ticker();
+    });
     super.initState();
-    getData();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("API Test"),
-        backgroundColor: Colors.deepOrange,
-      ),
-      body: ListView.builder(
-        itemCount: userData == null ? 0 : userData.length,
-          itemBuilder: (BuildContext context, int index) {
-            return Card(
-              child: Padding(
-                padding: EdgeInsets.all(10),
-                child: Row(
-                  children: <Widget>[
-                    CircleAvatar(
-                      backgroundImage: NetworkImage(userData[index]["avatar"]),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.all(10),
-                      child: Text("${userData[index]["last_name"]} , ${userData[index]["first_name"]}"),
-                    ),
-                  ],
+
+
+    int seconds = secondspassed % 60;
+    int minutes = secondspassed ~/ 60;
+    int hours = secondspassed ~/ (60*60);
+
+    return MaterialApp(
+      title: 'Timer App',
+      home: Scaffold(
+        appBar: AppBar(
+            title: Text("Timer App")
+        ),
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  TimerContainer(
+                      label: 'H',
+                    value: hours.toString(),
+                  ),
+                  TimerContainer(
+                      label: 'M',
+                      value: minutes.toString(),
+                  ),
+                  TimerContainer(
+                      label: 'S',
+                    value: seconds.toString(),
+                  ),
+                ],
+              ),
+              Container(
+                margin: EdgeInsets.only(top:20),
+                child: RaisedButton(
+                  child: Text (isactive ? 'Stop': 'Start'),
+                  onPressed: () {
+                    setState(() {
+                      isactive = !isactive;
+                    });
+                  },
                 ),
               ),
-            );
-          }
+            ],
+          ),
+        ),
       ),
     );
   }
+}
 
+
+class TimerContainer extends StatelessWidget{
+
+  TimerContainer({this.label, this.value});
+  String label;
+  String value;
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: 5),
+      padding: EdgeInsets.all(10),
+      decoration: new BoxDecoration(
+        borderRadius: new BorderRadius.circular(10),
+        color: Colors.black54
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          Text(
+            "$value",
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 50
+            ),
+          ),
+          Text(
+            "$label",
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 60
+            ),
+          )
+        ],
+      ),
+    );
+  }
 }
 
 
